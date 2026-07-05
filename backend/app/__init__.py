@@ -1,18 +1,31 @@
-from flask import Flask, jsonify
+from flask import Flask
 from flask_cors import CORS
+
+from app.config import Config
+from app.extensions import db, jwt
+from app.models import User
+from app.routes.auth import auth_bp
 
 
 def create_app():
     app = Flask(__name__)
 
-    # Enable CORS so React can communicate with Flask
+    app.config.from_object(Config)
+
     CORS(app)
+
+    db.init_app(app)
+    jwt.init_app(app)
+
+    app.register_blueprint(auth_bp, url_prefix="/api/auth")
+
+    with app.app_context():
+        db.create_all()
 
     @app.route("/")
     def home():
-        return jsonify({
-            "message": "Welcome to FinTrack AI 🚀",
-            "status": "Backend is running"
-        })
+        return {
+            "message": "FinTrack AI Backend Running 🚀"
+        }
 
-    return app 
+    return app

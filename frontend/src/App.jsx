@@ -1,32 +1,19 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
-  const [message, setMessage] = useState("Loading...");
-
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:5000/")
-      .then((res) => {
-        setMessage(res.data.message);
-      })
-      .catch(() => {
-        setMessage("Backend connection failed ❌");
-      });
-  }, []);
-
-  return (
-    <div
-      style={{
-        height: "100vh",
-        display: "grid",
-        placeItems: "center",
-        fontFamily: "Arial",
-      }}
-    >
-      <h1>{message}</h1>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;

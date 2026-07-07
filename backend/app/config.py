@@ -7,4 +7,4 @@ class Config:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "jwt-secret-key") 
+    JWT_SECRET_KEY = "fintrack-ai-super-secret-key-2026-development-project"

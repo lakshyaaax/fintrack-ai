@@ -15,6 +15,13 @@ class User(db.Model):
 
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
+    transactions = db.relationship(
+        "Transaction",
+        backref="user",
+        lazy=True,
+        cascade="all, delete-orphan"
+    )
+
     def set_password(self, password):
         self.password = generate_password_hash(password)
 

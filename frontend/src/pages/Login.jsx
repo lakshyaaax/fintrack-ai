@@ -22,10 +22,16 @@ function Login() {
 
             console.log(response);
 
-            // Save JWT token
+            // Save JWT Token
             localStorage.setItem(
                 "access_token",
                 response.access_token
+            );
+
+            // Save Logged-in User
+            localStorage.setItem(
+                "user",
+                JSON.stringify(response.user)
             );
 
             // Redirect to Dashboard
@@ -74,7 +80,9 @@ function Login() {
 
                 <p>
                     Don't have an account?{" "}
-                    <Link to="/register">Register</Link>
+                    <Link to="/register">
+                        Register
+                    </Link>
                 </p>
 
             </form>

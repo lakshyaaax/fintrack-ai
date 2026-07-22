@@ -1,5 +1,4 @@
 from flask import Blueprint, request, jsonify
-
 from flask_jwt_extended import create_access_token
 
 from app.extensions import db
@@ -32,6 +31,7 @@ def register():
 
     return jsonify({"message": "User registered successfully"}), 201
 
+
 @auth_bp.route("/login", methods=["POST"])
 def login():
 
@@ -56,6 +56,7 @@ def login():
         "user": {
             "id": user.id,
             "name": user.name,
-            "email": user.email
+            "email": user.email,
+            "created_at": user.created_at.strftime("%d %B %Y")
         }
     }), 200

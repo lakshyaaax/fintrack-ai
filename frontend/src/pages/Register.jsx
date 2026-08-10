@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import { register } from "../services/authService";
 
@@ -9,35 +10,44 @@ function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (loading) return;
+
+        // ✅ Password check
         if (password !== confirmPassword) {
-            alert("Passwords do not match");
+            toast.error("Passwords do not match");
             return;
         }
 
+        setLoading(true);
+
         try {
 
-            await register({
+            const response = await register({
                 name,
                 email,
                 password,
             });
 
-            alert("Registration Successful! Please login.");
+            toast.success("Account created successfully 🎉");
 
+            // 👉 Redirect to login
             navigate("/");
 
         } catch (error) {
 
-            alert(
+            toast.error(
                 error.response?.data?.message || "Registration Failed"
             );
 
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -85,8 +95,11 @@ function Register() {
                     required
                 />
 
-                <button type="submit">
-                    Register
+                <button
+                    type="submit"
+                    disabled={loading}
+                >
+                    {loading ? "Creating Account..." : "Register"}
                 </button>
 
                 <p>

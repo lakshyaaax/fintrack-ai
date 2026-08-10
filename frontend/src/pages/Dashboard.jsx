@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
     getTransactions,
     addTransaction,
@@ -27,26 +28,19 @@ function Dashboard() {
     const handleAdd = async () => {
         if (!title || !amount) return;
 
-        try {
-            await addTransaction({
-                title,
-                amount: Number(amount),
-                type: "expense",
-            });
+        await addTransaction({
+            title,
+            amount: Number(amount),
+            type: "expense",
+        });
 
-            setTitle("");
-            setAmount("");
-
-            fetchData(); // refresh
-        } catch (err) {
-            console.error(err);
-        }
+        setTitle("");
+        setAmount("");
+        fetchData();
     };
 
-    const total = transactions.reduce(
-        (acc, t) => acc + Number(t.amount),
-        0
-    );
+    // calculations
+    const total = transactions.reduce((acc, t) => acc + Number(t.amount), 0);
 
     return (
         <div style={styles.container}>
@@ -56,13 +50,35 @@ function Dashboard() {
                 Welcome, {user?.name || "User"} 👋
             </h2>
 
+            {/* NAVIGATION */}
+            <div style={styles.nav}>
+                <Link to="/analytics">📊 Analytics</Link>
+                <Link to="/profile">👤 Profile</Link>
+                <Link to="/settings">⚙️ Settings</Link>
+            </div>
+
+            {/* CARDS */}
+            <div style={styles.card}>
+                <h3>💸 Total Balance</h3>
+                <p>₹{total}</p>
+            </div>
+
+            <div style={styles.card}>
+                <h3>📊 Monthly Spending</h3>
+                <p>₹{total}</p>
+            </div>
+
+            <div style={styles.card}>
+                <h3>🎯 Savings Goal</h3>
+                <p>Not set</p>
+            </div>
+
             {/* ADD TRANSACTION */}
             <div style={styles.card}>
                 <h3>Add Transaction</h3>
 
                 <input
                     style={styles.input}
-                    type="text"
                     placeholder="Title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -79,12 +95,6 @@ function Dashboard() {
                 <button style={styles.button} onClick={handleAdd}>
                     Add
                 </button>
-            </div>
-
-            {/* TOTAL */}
-            <div style={styles.card}>
-                <h3>💸 Total Balance</h3>
-                <p>₹{total}</p>
             </div>
 
             {/* TRANSACTIONS */}
@@ -113,17 +123,19 @@ const styles = {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "flex-start",
-        paddingTop: "40px",
         gap: "20px",
+        padding: "30px",
     },
     title: {
         fontSize: "2rem",
         fontWeight: "bold",
     },
     subtitle: {
-        fontSize: "1.2rem",
         color: "#cbd5f5",
+    },
+    nav: {
+        display: "flex",
+        gap: "15px",
     },
     card: {
         background: "#1e293b",
@@ -131,7 +143,6 @@ const styles = {
         borderRadius: "12px",
         width: "280px",
         textAlign: "center",
-        boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
     },
     input: {
         width: "100%",
@@ -144,10 +155,9 @@ const styles = {
         marginTop: "10px",
         padding: "10px",
         width: "100%",
-        border: "none",
         borderRadius: "6px",
+        border: "none",
         background: "#38bdf8",
-        color: "#000",
         fontWeight: "bold",
         cursor: "pointer",
     },

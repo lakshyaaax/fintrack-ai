@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://your-pythonanywhere-url/api", // backend URL
+  baseURL: "https://lakshya123.pythonanywhere.com/api", // backend URL
 });
 
 // Attach token automatically
